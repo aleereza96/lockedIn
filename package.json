@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:web": "cd apps/web && pnpm run dev"
+    "dev:web": "cd apps/web && npm run dev"
   },
   "keywords": [],
   "author": "",

@@ -1,12 +1,17 @@
 {
-  "name": "lockedin",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev:web": "cd apps/web && npm run dev"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+	"name": "lockedin",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev:web": "cd apps/web && npm run dev",
+		"dev:api": "cd apps/api && npm run start",
+		"dev": "concurrently \"npm run dev:web\" \"npm run dev:api\""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"concurrently": "^10.0.3"
+	}
 }

@@ -11,9 +11,6 @@ export class Profile extends AbstractEntity {
 	lastName: string
 
 	@Column()
-	email: string
-
-	@Column()
 	avatar: string
 
 	@OneToOne(() => User, (user) => user.profile)

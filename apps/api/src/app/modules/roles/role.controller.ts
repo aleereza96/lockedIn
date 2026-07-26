@@ -1,5 +1,4 @@
 import {
-	Controller,
 	Get,
 	Post,
 	Body,
@@ -26,9 +25,10 @@ import { ApiPaginatedResponse } from '../../common/decorators/api-paginated-resp
 import { PaginationParams } from '../../common/decorators/pagination-param.decorator'
 import { type PaginationRequest } from '../../common/interfaces/pagination.interface'
 import { PaginationResponseDto } from '../../common/interfaces/pagination-response.interface'
+import { AdminController } from '../../common/decorators/admin-controller.decorator'
 
 @ApiTags('Roles')
-@Controller('role')
+@AdminController('role')
 export class RoleController {
 	constructor(private readonly roleService: RoleService) {}
 

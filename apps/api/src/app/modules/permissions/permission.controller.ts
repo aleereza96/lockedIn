@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common'
+import { Get } from '@nestjs/common'
 import { PermissionService } from './permission.service'
 import { PermissionResponseDto } from './dto/permission-response.dto'
 import { ApiOperation, ApiQuery } from '@nestjs/swagger'
@@ -6,8 +6,9 @@ import { ApiPaginatedResponse } from '../../common/decorators/api-paginated-resp
 import { type PaginationRequest } from '../../common/interfaces/pagination.interface'
 import { PaginationResponseDto } from '../../common/interfaces/pagination-response.interface'
 import { PaginationParams } from '../../common/decorators/pagination-param.decorator'
+import { AdminController } from '../../common/decorators/admin-controller.decorator'
 
-@Controller('permission')
+@AdminController('permission')
 export class PermissionController {
 	constructor(private readonly permissionService: PermissionService) {}
 

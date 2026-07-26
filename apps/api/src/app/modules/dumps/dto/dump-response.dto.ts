@@ -20,3 +20,14 @@ export class DumpItemResponseDto {
 	@ApiProperty({ type: String, description: 'Creation timestamp' })
 	createdAt: Date
 }
+
+export class SessionDumpResponseDto {
+	@ApiProperty({ type: String, description: 'The parked thought' })
+	body: string
+
+	@ApiProperty({ enum: DumpType, description: 'trash or save' })
+	type: DumpType
+
+	@ApiProperty({ type: String, description: 'Creation timestamp' })
+	createdAt: Date
+}

@@ -1,5 +1,4 @@
 import {
-	Controller,
 	Get,
 	Post,
 	Body,
@@ -26,9 +25,10 @@ import { PaginationParams } from '../../common/decorators/pagination-param.decor
 import type { PaginationRequest } from '../../common/interfaces/pagination.interface'
 import { PaginationResponseDto } from '../../common/interfaces/pagination-response.interface'
 import { Permissions } from '../permissions/decorators/permissions.decorator'
+import { AdminController } from '../../common/decorators/admin-controller.decorator'
 
 @ApiTags('Users')
-@Controller('users')
+@AdminController('users')
 export class UsersController {
 	constructor(private readonly userService: UsersService) {}
 

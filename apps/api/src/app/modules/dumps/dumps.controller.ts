@@ -1,34 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DumpsService } from './dumps.service';
-import { CreateDumpDto } from './dto/create-dump.dto';
-import { UpdateDumpDto } from './dto/update-dump.dto';
+import {
+	Controller,
+	Get,
+	Post,
+	Body,
+	Patch,
+	Param,
+	Delete
+} from '@nestjs/common'
+import { DumpsService } from './dumps.service'
+import { CreateDumpItemDto } from './dto/create-dump.dto'
+import { DumpItemResponseDto } from './dto/dump-response.dto'
+import { ApiTags } from '@nestjs/swagger'
 
+@ApiTags('Dumps')
 @Controller('dumps')
 export class DumpsController {
-  constructor(private readonly dumpsService: DumpsService) {}
-
-  @Post()
-  create(@Body() createDumpDto: CreateDumpDto) {
-    return this.dumpsService.create(createDumpDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.dumpsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dumpsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDumpDto: UpdateDumpDto) {
-    return this.dumpsService.update(+id, updateDumpDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.dumpsService.remove(+id);
-  }
+  constructor(private readonly dumpsService: DumpsService) { }
+  
 }

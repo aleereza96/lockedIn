@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsString, IsEnum, IsNumber } from 'class-validator'
-import { DumpType } from '../dumps.enums'
+import { DumpType } from '../dumps.types'
 
 export class CreateDumpItemDto {
 	@ApiProperty({

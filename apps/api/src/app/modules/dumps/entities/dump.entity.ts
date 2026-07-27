@@ -2,7 +2,7 @@ import { Column, ManyToOne, JoinColumn } from 'typeorm'
 import { AbstractEntity } from '../../../common/database/abstract.entity'
 import { Session } from '../../sessions/entities/session.entity'
 import { User } from '../../users/entities/user.entity'
-import { DumpType } from '../dumps.enums'
+import { DumpType } from '../dumps.types'
 
 export class DumpItem extends AbstractEntity {
 	@ManyToOne(() => Session, (session) => session.dumpItems, {

@@ -34,7 +34,7 @@ export const PaginationParams = createParamDecorator(
 			limit: numericLimit,
 			order,
 			joins,
-			params
+			...params
 		}
 	}
 )

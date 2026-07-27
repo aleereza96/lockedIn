@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { DumpType } from '../dumps.enums'
+import { DumpType } from '../dumps.types'
 
 export class DumpItemResponseDto {
 	@ApiProperty({ type: Number, description: 'ID of the dump item' })

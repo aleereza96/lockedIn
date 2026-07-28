@@ -48,7 +48,7 @@ export class DumpsController {
 		@Request() req: Request & { user: User },
 		@Body() createDumpDto: CreateDumpItemDto
 	): Promise<SessionDumpResponseDto> {
-		return await this.dumpsService.create(req.user, createDumpDto)
+		return await this.dumpsService.createSessionDump(req.user, createDumpDto)
 	}
 
 	@Get()
@@ -64,7 +64,7 @@ export class DumpsController {
 		@Request() req: Request & { user: User },
 		@PaginationParams() pagination: DumpsPaginationRequest
 	): Promise<PaginationResponseDto<SessionDumpResponseDto>> {
-		return await this.dumpsService.findAll(req.user, pagination)
+		return await this.dumpsService.findAllUserDumps(req.user, pagination)
 	}
 
 	@Get(':sessionId')

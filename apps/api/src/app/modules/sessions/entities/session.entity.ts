@@ -1,6 +1,6 @@
 import { Column, ManyToOne, OneToMany, OneToOne, JoinColumn } from 'typeorm'
 import { AbstractEntity } from '../../../common/database/abstract.entity'
-import { FocusRating, SessionStatus } from '../sessions.enums'
+import { FocusRating, SessionStatus } from '../sessions.types'
 import { User } from '../../users/entities/user.entity'
 import { DumpItem } from '../../dumps/entities/dump.entity'
 import { Topic } from '../../topics/entities/topic.entity'

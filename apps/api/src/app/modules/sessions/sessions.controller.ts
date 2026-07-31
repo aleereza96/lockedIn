@@ -3,81 +3,95 @@ import {
 	Get,
 	Post,
 	Body,
-	Patch,
 	Param,
 	Delete,
 	UsePipes,
-	ValidationPipe
+	ValidationPipe,
+	Request,
+	Put
 } from '@nestjs/common'
 import { SessionsService } from './sessions.service'
-import { CreateSessionDto } from './dto/create-session.dto'
-import { UpdateSessionDto } from './dto/update-session.dto'
 import { AdminController } from '../../common/decorators/admin-controller.decorator'
 import { Permissions } from '../permissions/decorators/permissions.decorator'
-import { ApiBody, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger'
+import {
+	ApiBody,
+	ApiOperation,
+	ApiParam,
+	ApiQuery,
+	ApiTags
+} from '@nestjs/swagger'
 import { ApiGlobalResponse } from '../../common/decorators/api-global-response.decorators'
 import { ApiPaginatedResponse } from '../../common/decorators/api-paginated-response.decorator'
-import { PaginationRequest } from '../../common/interfaces/pagination.interface'
+import { type PaginationRequest } from '../../common/interfaces/pagination.interface'
 import { PaginationResponseDto } from '../../common/interfaces/pagination-response.interface'
+import { PaginationParams } from '../../common/decorators/pagination-param.decorator'
+import {
+	EndSessionDto,
+	SessionResponseDto,
+	StartSessionDto
+} from './dto/user-session.dto'
+import { User } from '../users/entities/user.entity'
+import { SessionAdminResponseDto } from './dto/admin-session.dto'
 
+@ApiTags('Sessions')
 @Controller('sessions')
 export class SessionsController {
 	constructor(private readonly sessionsService: SessionsService) {}
 	@Post('start')
 	@ApiOperation({ summary: 'Starts a new session' })
-	@ApiBody({ type: CreateDumpItemAdminDto })
-	@ApiGlobalResponse(DumpItemResponseDto)
+	@ApiBody({ type: StartSessionDto })
+	@ApiGlobalResponse(SessionResponseDto)
 	@UsePipes(new ValidationPipe())
-	async create(
-		@Body() createDumpDto: CreateDumpItemAdminDto
-	): Promise<DumpItemResponseDto> {
-		return await this.sessionsService.start(createDumpDto)
+	async start(
+		@Request() req: Request & { user: User },
+		@Body() startSessionDto: StartSessionDto
+	): Promise<SessionResponseDto> {
+		return await this.sessionsService.start(req.user, startSessionDto)
 	}
 
 	@Post('stop')
 	@ApiOperation({ summary: 'Stops a session' })
-	@ApiBody({ type: CreateDumpItemAdminDto })
-	@ApiGlobalResponse(DumpItemResponseDto)
+	@ApiBody({ type: EndSessionDto })
+	@ApiGlobalResponse(SessionResponseDto)
 	@UsePipes(new ValidationPipe())
-	async create(
-		@Body() createDumpDto: CreateDumpItemAdminDto
-	): Promise<DumpItemResponseDto> {
-		return await this.sessionsService.stop(createDumpDto)
+	async stop(
+		@Request() req: Request & { user: User },
+		@Body() endSessionDto: EndSessionDto
+	): Promise<SessionResponseDto> {
+		return await this.sessionsService.stop(req.user, endSessionDto)
 	}
 
 	@Post('pause')
 	@ApiOperation({ summary: 'Pauses a session' })
-	@ApiBody({ type: CreateDumpItemAdminDto })
-	@ApiGlobalResponse(DumpItemResponseDto)
-	@UsePipes(new ValidationPipe())
-	async create(
-		@Body() createDumpDto: CreateDumpItemAdminDto
-	): Promise<DumpItemResponseDto> {
-		return await this.sessionsService.pause(createDumpDto)
+	@ApiGlobalResponse(SessionResponseDto)
+	async pause(
+		@Request() req: Request & { user: User }
+	): Promise<SessionResponseDto> {
+		return await this.sessionsService.pause(req.user)
 	}
 
 	@Post('resume')
 	@ApiOperation({ summary: 'resume the paused session' })
-	@ApiBody({ type: CreateDumpItemAdminDto })
-	@ApiGlobalResponse(DumpItemResponseDto)
-	@UsePipes(new ValidationPipe())
-	async create(
-		@Body() createDumpDto: CreateDumpItemAdminDto
-	): Promise<DumpItemResponseDto> {
-		return await this.sessionsService.pause(createDumpDto)
+	@ApiGlobalResponse(SessionResponseDto)
+	async resume(
+		@Request() req: Request & { user: User }
+	): Promise<SessionResponseDto> {
+		return await this.sessionsService.pause(req.user)
 	}
 
 	@Get('active-session')
 	@ApiOperation({
 		description: 'Get the active session if there is not any returns null'
 	})
-	@ApiGlobalResponse(DumpItemResponseDto)
-	@ApiParam({ name: 'id', type: 'number', description: 'Dump ID' })
-	async findOne(@Param('id') id: string): Promise<DumpItemResponseDto> {
-		return await this.sessionsService.findOne(+id)
+	@ApiGlobalResponse(SessionResponseDto)
+	async getActiveSession(
+		@Request() req: Request & { user: User }
+	): Promise<SessionResponseDto> {
+		return await this.sessionsService.getActiveSession(req.user)
 	}
 }
 
+@ApiTags('Admin Sessions')
 @AdminController('sessions')
 export class SessionsAdminController {
 	constructor(private readonly sessionsService: SessionsService) {}
@@ -85,7 +99,7 @@ export class SessionsAdminController {
 	@Get()
 	@Permissions('admin.session.read')
 	@ApiOperation({ summary: 'Retrieve paginated dumps list' })
-	@ApiPaginatedResponse(DumpItemResponseDto)
+	@ApiPaginatedResponse(SessionAdminResponseDto)
 	@ApiQuery({
 		name: 'keyword',
 		type: 'string',
@@ -94,29 +108,26 @@ export class SessionsAdminController {
 	})
 	async findAll(
 		@PaginationParams() pagination: PaginationRequest
-	): Promise<PaginationResponseDto<DumpItemResponseDto>> {
+	): Promise<PaginationResponseDto<SessionAdminResponseDto>> {
 		return await this.sessionsService.findAll(pagination)
 	}
 
 	@Get(':id')
 	@Permissions('admin.session.read')
 	@ApiOperation({ description: 'Get dump by id' })
-	@ApiGlobalResponse(DumpItemResponseDto)
+	@ApiGlobalResponse(SessionAdminResponseDto)
 	@ApiParam({ name: 'id', type: 'number', description: 'Dump ID' })
-	async findOne(@Param('id') id: string): Promise<DumpItemResponseDto> {
+	async findOne(@Param('id') id: string): Promise<SessionAdminResponseDto> {
 		return await this.sessionsService.findOne(+id)
 	}
 
-	@Post('pause')
+	@Put(':id')
 	@Permissions('admin.session.update')
 	@ApiOperation({ summary: 'Pauses a session by admin' })
-	@ApiBody({ type: CreateDumpItemAdminDto })
-	@ApiGlobalResponse(DumpItemResponseDto)
+	@ApiGlobalResponse(SessionAdminResponseDto)
 	@UsePipes(new ValidationPipe())
-	async create(
-		@Body() createDumpDto: CreateDumpItemAdminDto
-	): Promise<DumpItemResponseDto> {
-		return await this.sessionsService.pause(createDumpDto)
+	async create(@Param('id') id: string): Promise<SessionAdminResponseDto> {
+		return await this.sessionsService.pauseById(+id)
 	}
 
 	@Delete(':id')

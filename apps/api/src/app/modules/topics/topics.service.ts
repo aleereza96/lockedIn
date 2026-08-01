@@ -1,26 +1,60 @@
 import { Injectable } from '@nestjs/common'
-import { CreateTopicDto } from './dto/user-topic.dto'
-import { UpdateTopicDto } from './dto/admin-topic.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import {
+	CreateTopicAdminDto,
+	TopicResponseAdminDto,
+	UpdateTopicAdminDto
+} from './dto/admin-topic.dto'
+import { PaginationResponseDto } from '../../common/interfaces/pagination-response.interface'
+import { PaginationRequest } from '../../common/interfaces/pagination.interface'
+import { TopicResponseDto } from './dto/user-topic.dto'
+import { User } from '../users/entities/user.entity'
+import { TopicsRepository } from './topics.repository'
+import { TopicAdminMapper, TopicUserMapper } from './topics.mapper'
 
 @Injectable()
 export class TopicsService {
-	create(createTopicDto: CreateTopicDto) {
-		return 'This action adds a new topic'
-	}
+	constructor(
+		@InjectRepository(TopicsRepository)
+		private readonly userRepository: TopicsRepository,
+		private readonly userMapper: TopicUserMapper,
+		private readonly adminMapper: TopicAdminMapper
+	) {}
 
-	findAll() {
-		return `This action returns all topics`
-	}
+	async createByUser(
+		user: User,
+		createTopicDto: CreateTopicAdminDto
+	): Promise<TopicResponseDto> {}
 
-	findOne(id: number) {
-		return `This action returns a #${id} topic`
-	}
+	async findAllByUser(
+		user: User,
+		pagination: PaginationRequest
+	): Promise<PaginationResponseDto<TopicResponseDto>> {}
 
-	update(id: number, updateTopicDto: UpdateTopicDto) {
-		return `This action updates a #${id} topic`
-	}
+	async findOneByUser(user: User, id: number): Promise<TopicResponseDto> {}
 
-	remove(id: number) {
-		return `This action removes a #${id} topic`
-	}
+	async updateByUser(
+		user: User,
+		id: number,
+		updateTopicDto: UpdateTopicAdminDto
+	): Promise<TopicResponseDto> {}
+
+	async removeByUser(user: User, id: number): Promise<void> {}
+
+	async createByAdmin(
+		createTopicDto: CreateTopicAdminDto
+	): Promise<TopicResponseAdminDto> {}
+
+	async findAllByAdmin(
+		pagination: PaginationRequest
+	): Promise<PaginationResponseDto<TopicResponseAdminDto>> {}
+
+	async findOneByAdmin(id: number): Promise<TopicResponseAdminDto> {}
+
+	async updateByAdmin(
+		id: number,
+		updateTopicDto: UpdateTopicAdminDto
+	): Promise<TopicResponseAdminDto> {}
+
+	async removeByAdmin(id: number): Promise<void> {}
 }

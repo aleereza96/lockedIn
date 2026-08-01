@@ -97,4 +97,7 @@ export class TopicResponseAdminDto {
 
 	@ApiProperty({ type: String, description: 'Creation timestamp' })
 	createdAt: Date
+
+	@ApiProperty({ type: String, description: 'Update timestamp' })
+	updatedAt: Date
 }

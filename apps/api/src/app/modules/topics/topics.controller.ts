@@ -163,7 +163,7 @@ export class TopicsAdminController {
 	@Permissions('admin.topics.delete')
 	@ApiOperation({ summary: 'Delete Topic by ID' })
 	@ApiParam({ name: 'id', type: 'number', description: 'Topic ID' })
-	remove(@Param('id') id: string) {
+	remove(@Param('id') id: string): Promise<void> {
 		return this.topicsService.removeByAdmin(+id)
 	}
 }

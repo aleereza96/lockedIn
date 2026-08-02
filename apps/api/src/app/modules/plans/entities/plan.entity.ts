@@ -9,6 +9,9 @@ export class Plan extends AbstractEntity {
 	@Column({ name: 'display_name' })
 	displayName: string
 
+	@Column({ name: 'description' })
+	description: string
+
 	@Column({
 		name: 'default_session_secs',
 		type: 'int',

@@ -1,26 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { CreateSessionPauseDto } from './dto/create-session-pause.dto';
-import { UpdateSessionPauseDto } from './dto/update-session-pause.dto';
+import { Injectable } from '@nestjs/common'
+import {
+	CreateSessionPauseDto,
+	UpdateSessionPauseDto
+} from './dto/session-pause.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { SessionPausesRepository } from './session-pauses.repository'
+import { SessionResponseDto } from '../sessions/dto/user-session.dto'
+import { SessionPauseMapper } from './session-pauses.mapper'
 
 @Injectable()
 export class SessionPausesService {
-  create(createSessionPauseDto: CreateSessionPauseDto) {
-    return 'This action adds a new sessionPause';
-  }
+	constructor(
+		@InjectRepository(SessionPausesRepository)
+		private readonly sessionPauseRepository: SessionPausesRepository,
+		private readonly sessionPauseMapper: SessionPauseMapper
+	) {}
 
-  findAll() {
-    return `This action returns all sessionPauses`;
-  }
+	async create(
+		createSessionPauseDto: CreateSessionPauseDto
+	): Promise<SessionResponseDto> {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} sessionPause`;
-  }
+	async findOne(id: number): Promise<SessionResponseDto> {}
 
-  update(id: number, updateSessionPauseDto: UpdateSessionPauseDto) {
-    return `This action updates a #${id} sessionPause`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} sessionPause`;
-  }
+	async update(
+		id: number,
+		updateSessionPauseDto: UpdateSessionPauseDto
+	): Promise<SessionResponseDto> {}
 }

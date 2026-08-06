@@ -1,26 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { CreateReflectionDto } from './dto/create-reflection.dto';
-import { UpdateReflectionDto } from './dto/update-reflection.dto';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { ReflectionsRepository } from './reflections.repository'
+import { ReflectionAdminMapper } from './reflections.mapper'
+import { type PaginationRequest } from '../../common/interfaces/pagination.interface'
+import { PaginationResponseDto } from '../../common/interfaces/pagination-response.interface'
+import {
+	ReflectionAdminResponseDto,
+	UpdateReflectionAdminDto
+} from './dto/admin-reflection.dto'
 
 @Injectable()
 export class ReflectionsService {
-  create(createReflectionDto: CreateReflectionDto) {
-    return 'This action adds a new reflection';
-  }
+	constructor(
+		@InjectRepository(ReflectionsRepository)
+		private readonly userRepository: ReflectionsRepository,
+		private readonly adminMapper: ReflectionAdminMapper
+	) {}
 
-  findAll() {
-    return `This action returns all reflections`;
-  }
+	async findAll(
+		pagination: PaginationRequest
+	): Promise<PaginationResponseDto<ReflectionAdminResponseDto>> {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} reflection`;
-  }
+	async findOne(id: number): Promise<ReflectionAdminResponseDto> {}
 
-  update(id: number, updateReflectionDto: UpdateReflectionDto) {
-    return `This action updates a #${id} reflection`;
-  }
+	async update(
+		id: number,
+		updateReflectionDto: UpdateReflectionAdminDto
+	): Promise<ReflectionAdminResponseDto> {}
 
-  remove(id: number) {
-    return `This action removes a #${id} reflection`;
-  }
+	async remove(id: number): Promise<void> {}
 }

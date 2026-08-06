@@ -1,26 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { CreateEdgeDto } from './dto/create-edge.dto';
-import { UpdateEdgeDto } from './dto/update-edge.dto';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { EdgesRepository } from './edges.repository'
+import { EdgeMapper } from './edges.mapper'
+import { CreateEdgeDto, EdgeResponseDto, UpdateEdgeDto } from './dto/edge.dto'
 
 @Injectable()
 export class EdgesService {
-  create(createEdgeDto: CreateEdgeDto) {
-    return 'This action adds a new edge';
-  }
+	constructor(
+		@InjectRepository(EdgesRepository)
+		private readonly sessionPauseRepository: EdgesRepository,
+		private readonly sessionPauseMapper: EdgeMapper
+	) {}
 
-  findAll() {
-    return `This action returns all edges`;
-  }
+	async create(createEdgeDto: CreateEdgeDto): Promise<EdgeResponseDto> {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} edge`;
-  }
+	async findOne(id: number): Promise<EdgeResponseDto> {}
 
-  update(id: number, updateEdgeDto: UpdateEdgeDto) {
-    return `This action updates a #${id} edge`;
-  }
+	async update(
+		id: number,
+		updateEdgeDto: UpdateEdgeDto
+	): Promise<EdgeResponseDto> {}
 
-  remove(id: number) {
-    return `This action removes a #${id} edge`;
-  }
+	async remove(id: number): Promise<void> {}
 }

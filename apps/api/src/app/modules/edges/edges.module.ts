@@ -1,9 +1,7 @@
-import { Module } from '@nestjs/common';
-import { EdgesService } from './edges.service';
-import { EdgesController } from './edges.controller';
+import { Module } from '@nestjs/common'
+import { EdgesService } from './edges.service'
 
 @Module({
-  controllers: [EdgesController],
-  providers: [EdgesService],
+	providers: [EdgesService]
 })
 export class EdgesModule {}

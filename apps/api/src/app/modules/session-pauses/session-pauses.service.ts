@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import {
 	CreateSessionPauseDto,
+	SessionPauseResponseDto,
 	UpdateSessionPauseDto
 } from './dto/session-pause.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { SessionPausesRepository } from './session-pauses.repository'
-import { SessionResponseDto } from '../sessions/dto/user-session.dto'
 import { SessionPauseMapper } from './session-pauses.mapper'
 
 @Injectable()
@@ -18,12 +18,12 @@ export class SessionPausesService {
 
 	async create(
 		createSessionPauseDto: CreateSessionPauseDto
-	): Promise<SessionResponseDto> {}
+	): Promise<SessionPauseResponseDto> {}
 
-	async findOne(id: number): Promise<SessionResponseDto> {}
+	async findOne(id: number): Promise<SessionPauseResponseDto> {}
 
 	async update(
 		id: number,
 		updateSessionPauseDto: UpdateSessionPauseDto
-	): Promise<SessionResponseDto> {}
+	): Promise<SessionPauseResponseDto> {}
 }
